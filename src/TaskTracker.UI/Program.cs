@@ -15,9 +15,9 @@ namespace TaskTracker.UI
             IAuthService authService = new AuthService();
             ITaskService taskService = new TaskService();
 
-            Console.WriteLine("Выберите действие:");
-            Console.WriteLine("1 - Регитрация");
-            Console.WriteLine("2 - Логин");
+            Console.WriteLine("Choose action:");
+            Console.WriteLine("1 - Register");
+            Console.WriteLine("2 - Login");
 
             string choice = Console.ReadLine();
 
@@ -41,7 +41,6 @@ namespace TaskTracker.UI
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
-                            return;
                         }
                         break;
                     case "2":
@@ -58,7 +57,6 @@ namespace TaskTracker.UI
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
-                            return;
                         }
                         break;
                 }
@@ -68,28 +66,86 @@ namespace TaskTracker.UI
 
             while (continueFlag)
             {
-                Console.WriteLine("Выберите действие:");
-                Console.WriteLine("1 - Создать задачу");
-                Console.WriteLine("2 - Обновить задачу");
-                Console.WriteLine("3 - Удалить задачу");
-                Console.WriteLine("4 - Получить список задач пользователя");
-                Console.WriteLine("5 - Закончить работа программы");
+                Console.WriteLine("Choose action:");
+                Console.WriteLine("1 - Create task");
+                Console.WriteLine("2 - Update task");
+                Console.WriteLine("3 - Delete task");
+                Console.WriteLine("4 - Get list of all user tasks");
+                Console.WriteLine("5 - Stop program");
 
                 choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        // TODO
+                        Console.WriteLine("Enter username:"); // TODO: remember it in future
+                        string taskUser = Console.ReadLine();
+                        
+                        Console.WriteLine("Enter task title:");
+                        string title = Console.ReadLine();
+                        
+                        Console.WriteLine("Enter task description:");
+                        string desc = Console.ReadLine();
+                        
+                        Console.WriteLine("Enter deadline (in format yyyy-MM-dd):"); // TODO: add smarter validation
+                        DateTime deadline = DateTime.Parse(Console.ReadLine());
+                        
+                        Console.WriteLine("Choose Priority (Low, Medium, High):");
+                        TaskPriority priority = (TaskPriority)Enum.Parse(typeof(TaskPriority), Console.ReadLine());
+                        
+                        try
+                        {
+                            int taskId = taskService.CreateTask(title, desc, taskUser, deadline, priority);
+                            Console.WriteLine($"Created task successfully! Id = {taskId}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                         break;
                     case "2":
-                        // TODO
+                        // TODO:
+                        Console.WriteLine("Sorry, you can't update task now");
                         break;
                     case "3":
-                        // TODO
+                        Console.Write("Enter ID for task you want to delete: ");
+                        int deleteId = int.Parse(Console.ReadLine());
+                        
+                        try
+                        {
+                            taskService.DeleteTask(deleteId);
+                            Console.WriteLine("Delete task successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        
                         break;
                     case "4":
-                        // TODO
+                        Console.Write("Enter your username: ");
+                        string userNameForTasks = Console.ReadLine();
+                        
+                        try
+                        {
+                            var tasks = taskService.GetTasksByUsername(userNameForTasks);
+                            if (tasks.Count == 0)
+                            {
+                                Console.WriteLine("Can't find your tasks");
+                            }
+                            else
+                            {
+                                foreach (var t in tasks)
+                                {
+                                    Console.WriteLine($"ID: {t.Id}, Title: {t.Title}, Deadline: {t.Deadline.ToShortDateString()}, Status: {t.Status}, Priority: {t.Priority}");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        
                         break;
                     case "5":
                         continueFlag = false;
