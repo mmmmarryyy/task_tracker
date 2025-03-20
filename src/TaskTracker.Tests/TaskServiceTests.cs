@@ -1,5 +1,7 @@
 using Moq;
-using TaskTracker.Domain;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using TaskTracker.Domain.Entities;
 using TaskTracker.Domain.Enums;
 using TaskTracker.Domain.Interfaces;
@@ -20,10 +22,7 @@ namespace TaskTracker.Tests
             _userRepositoryMock = new Mock<IUserRepository>();
             _taskRepositoryMock = new Mock<ITaskRepository>();
 
-            ServiceLocator.UserRepository = _userRepositoryMock.Object;
-            ServiceLocator.TaskRepository = _taskRepositoryMock.Object;
-
-            _taskService = new TaskService();
+            _taskService = new TaskService(_userRepositoryMock.Object, _taskRepositoryMock.Object);
         }
 
         [Test]
@@ -55,7 +54,7 @@ namespace TaskTracker.Tests
             // Arrange
             string username = "nonexistent";
             DateTime deadline = DateTime.Now.AddDays(1);
-
+        
             _userRepositoryMock.Setup(repo => repo.GetByUsername(username)).Returns((User)null);
 
             // Act & Assert

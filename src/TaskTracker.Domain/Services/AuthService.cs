@@ -8,10 +8,9 @@ namespace TaskTracker.Domain.Services
     {
         private readonly IUserRepository _userRepository;
 
-        public AuthService()
+        public AuthService(IUserRepository userRepository)
         {
-            // TODO: check that this repository are not null
-            _userRepository = ServiceLocator.UserRepository;
+            _userRepository = userRepository;
         }
 
         public User Register(string username, string password)

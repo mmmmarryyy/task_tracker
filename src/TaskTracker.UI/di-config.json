@@ -1,0 +1,5 @@
+{
+  "Singleton": [ "LoggerService", "DateTimeProvider" ],
+  "Scoped": [ "TaskRepository" ],
+  "Transient": [ "NotificationService" ]
+}

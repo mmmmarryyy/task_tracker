@@ -1,5 +1,4 @@
 using Moq;
-using TaskTracker.Domain;
 using TaskTracker.Domain.Entities;
 using TaskTracker.Domain.Interfaces;
 using TaskTracker.Domain.Services;
@@ -17,10 +16,7 @@ namespace TaskTracker.Tests
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-
-            ServiceLocator.UserRepository = _userRepositoryMock.Object;
-
-            _authService = new AuthService();
+            _authService = new AuthService(_userRepositoryMock.Object);
         }
 
         [Test]
@@ -54,7 +50,7 @@ namespace TaskTracker.Tests
             var existingUser = new User { Id = 1, Username = username, PasswordHash = PasswordHasher.HashPassword(password) };
 
             _userRepositoryMock.Setup(repo => repo.GetByUsername(username)).Returns(existingUser);
-
+        
             // Act & Assert
             var ex = Assert.Throws<Exception>(() => _authService.Register(username, password));
             Assert.That(ex.Message, Does.Contain("already exists"));

@@ -8,11 +8,10 @@ namespace TaskTracker.Domain.Services
         private readonly IUserRepository _userRepository;
         private readonly ITaskRepository _taskRepository;
 
-        public TaskService()
+        public TaskService(IUserRepository userRepository, ITaskRepository taskRepository)
         {
-            // TODO: check that this repositories are not null
-            _userRepository = ServiceLocator.UserRepository;
-            _taskRepository = ServiceLocator.TaskRepository;
+            _userRepository = userRepository;
+            _taskRepository = taskRepository;
         }
 
         public int CreateTask(string title, string description, string username, DateTime deadline, TaskPriority priority)
