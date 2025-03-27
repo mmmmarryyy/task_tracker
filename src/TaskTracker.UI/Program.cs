@@ -41,6 +41,7 @@ namespace TaskTracker.UI
                             string regPassword = Console.ReadLine();
                             try
                             {
+                                Console.WriteLine("DEBUG try to register in auth service");
                                 var newUser = authService.Register(regUsername, regPassword);
                                 Console.WriteLine("You are registered; now Login!");
                                 choice = "2";
