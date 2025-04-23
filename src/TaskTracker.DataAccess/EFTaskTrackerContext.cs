@@ -54,40 +54,40 @@ namespace TaskTracker.DataAccess
                 .HasValue<Domain.Entities.Task>("Regular")
                 .HasValue<RecurringTask>("Recurring");
 
-            modelBuilder.Entity<Domain.Entities.Task>()
-                .ToTable("Tasks")
-                .InsertUsingStoredProcedure("sp_InsertTask", sp =>
-                {
-                    sp.HasParameter(t => t.Title);
-                    sp.HasParameter(t => t.Description);
-                    sp.HasParameter(t => t.CreatedDate);
-                    sp.HasParameter(t => t.Deadline);
-                    sp.HasParameter(t => t.Status);
-                    sp.HasParameter(t => t.Priority);
-                    sp.HasParameter(t => t.UserId);
-                    sp.HasParameter(t => t.IsArchived);
-                    sp.HasParameter("TaskType");
-                    sp.HasParameter("RecurrenceInterval");
-                    sp.HasResultColumn(t => t.Id);
-                })
-                .UpdateUsingStoredProcedure("sp_UpdateTask", sp =>
-                {
-                    sp.HasOriginalValueParameter(t => t.Id);
-                    sp.HasParameter(t => t.Title);
-                    sp.HasParameter(t => t.Description);
-                    sp.HasParameter(t => t.CreatedDate);
-                    sp.HasParameter(t => t.Deadline);
-                    sp.HasParameter(t => t.Status);
-                    sp.HasParameter(t => t.Priority);
-                    sp.HasParameter(t => t.UserId);
-                    sp.HasParameter(t => t.IsArchived);
-                    sp.HasOriginalValueParameter("TaskType");
-                    sp.HasParameter("RecurrenceInterval");
-                })
-                .DeleteUsingStoredProcedure("sp_DeleteTask", sp =>
-                {
-                    sp.HasOriginalValueParameter(t => t.Id);
-                });
+            //modelBuilder.Entity<Domain.Entities.Task>()
+            //    .ToTable("Tasks")
+            //    .InsertUsingStoredProcedure("sp_InsertTask", sp =>
+            //    {
+            //        sp.HasParameter(t => t.Title);
+            //        sp.HasParameter(t => t.Description);
+            //        sp.HasParameter(t => t.CreatedDate);
+            //        sp.HasParameter(t => t.Deadline);
+            //        sp.HasParameter(t => t.Status);
+            //        sp.HasParameter(t => t.Priority);
+            //        sp.HasParameter(t => t.UserId);
+            //        sp.HasParameter(t => t.IsArchived);
+            //        sp.HasParameter("TaskType");
+            //        sp.HasParameter("RecurrenceInterval");
+            //        sp.HasResultColumn(t => t.Id);
+            //    })
+            //    .UpdateUsingStoredProcedure("sp_UpdateTask", sp =>
+            //    {
+            //        sp.HasOriginalValueParameter(t => t.Id);
+            //        sp.HasParameter(t => t.Title);
+            //        sp.HasParameter(t => t.Description);
+            //        sp.HasParameter(t => t.CreatedDate);
+            //        sp.HasParameter(t => t.Deadline);
+            //        sp.HasParameter(t => t.Status);
+            //        sp.HasParameter(t => t.Priority);
+            //        sp.HasParameter(t => t.UserId);
+            //        sp.HasParameter(t => t.IsArchived);
+            //        sp.HasOriginalValueParameter("TaskType");
+            //        sp.HasParameter("RecurrenceInterval");
+            //    })
+            //    .DeleteUsingStoredProcedure("sp_DeleteTask", sp =>
+            //    {
+            //        sp.HasOriginalValueParameter(t => t.Id);
+            //    });
         }
     }
 }

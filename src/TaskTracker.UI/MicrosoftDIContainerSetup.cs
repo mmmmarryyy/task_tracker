@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using TaskTracker.DataAccess.Repositories;
 using TaskTracker.Domain.Interfaces;
 using TaskTracker.Domain.Services;
 

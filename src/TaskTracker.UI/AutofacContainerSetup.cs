@@ -1,6 +1,10 @@
 using System.Reflection;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
+using TaskTracker.UI.Stores;
+using TaskTracker.UI.ViewModels;
+using TaskTracker.UI.Services;
+using System.Windows;
 
 namespace TaskTracker.UI
 {
@@ -22,7 +26,8 @@ namespace TaskTracker.UI
                 throw new Exception("Не удалось загрузить необходимые типы.");
             }
 
-            string connectionString = "Data Source=WRS-KIY-005\\SQLEXPRESS;Initial Catalog=TaskTrackerDB;Integrated Security=True;Encrypt=False"; // TODO: move connection string from code to settings
+            //string connectionString = "Data Source=WRS-KIY-005\\SQLEXPRESS;Initial Catalog=TaskTrackerDB;Integrated Security=True;Encrypt=False"; // TODO: move connection string from code to settings
+            string connectionString = "";
             Type chosenDatabaseType;
 
             try
@@ -56,19 +61,23 @@ namespace TaskTracker.UI
 
                 if (efContextInstance.Database.CanConnect())
                 {
+                    //MessageBox.Show("Подключение к MS SQL Server успешно. Будет использована EFDatabase.");
                     Console.WriteLine("Подключение к MS SQL Server успешно. Будет использована EFDatabase.");
-                    
+
                     chosenDatabaseType = efDatabaseType;
                 }
                 else
                 {
+                    //MessageBox.Show("Невозможно подключиться к MS SQL Server. Используем InMemoryDatabase.");
                     Console.WriteLine("Невозможно подключиться к MS SQL Server. Используем InMemoryDatabase.");
                     chosenDatabaseType = inMemoryDbType;
                 }
             }
             catch (Exception ex)
             {
+                //MessageBox.Show($"Ошибка при проверке подключения: {ex.Message}");
                 Console.WriteLine($"Ошибка при проверке подключения: {ex.Message}");
+                //MessageBox.Show("Используем InMemoryDatabase.");
                 Console.WriteLine("Используем InMemoryDatabase.");
                 chosenDatabaseType = inMemoryDbType;
             }
@@ -87,13 +96,18 @@ namespace TaskTracker.UI
                    .AsImplementedInterfaces()
                    .InstancePerDependency();
 
-            builder.RegisterType<AppRunner>().AsSelf().InstancePerDependency();
+            builder.RegisterType<AuthenticationStore>().SingleInstance();
+            builder.RegisterType<NavigationStore>().SingleInstance();
 
-            builder.RegisterType<ProductionEnvironment>().As<IEnvironment>().SingleInstance();
-
-            builder.RegisterInstance("Configuration from Autofac config").As<string>();
+            builder.RegisterType<LoginViewModel>().InstancePerDependency();
+            builder.RegisterType<TaskListViewModel>().InstancePerDependency();
+            builder.RegisterType<TaskEditViewModel>().InstancePerDependency();
+            builder.RegisterType<MainViewModel>().InstancePerDependency();
+            builder.RegisterType<MainViewModel>().InstancePerDependency();
+            builder.RegisterType<RelayCommand>();
 
             return builder.Build();
         }
     }
 }
+
